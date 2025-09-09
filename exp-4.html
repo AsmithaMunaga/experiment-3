@@ -3,191 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Form</title>
+  <title>Product Showcase</title>
   <style>
+    /* ===== Global Styles ===== */
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f7f7f7;
+      line-height: 1.6;
     }
-    form {
-      background: #fff;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      outline: none;
-      box-sizing: border-box;
-    }
-    input.valid {
-      border-color: green;
-      background: #e6ffe6;
-    }
-    input.invalid {
-      border-color: red;
-      background: #ffe6e6;
-    }
-    .error {
-      color: red;
-      font-size: 0.9em;
-      display: none;
-    }
-    #success-message {
-      color: green;
-      font-weight: bold;
-      margin-top: 20px;
+
+    header {
+      background: #333;
+      color: #fff;
+      padding: 1rem;
       text-align: center;
-      display: none;
     }
-    button {
-      margin-top: 20px;
-      padding: 10px;
+
+    nav {
+      position: fixed;
+      top: 0;
       width: 100%;
-      border: none;
-      border-radius: 5px;
-      background: #007bff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
+      background: #444;
+      padding: 0.5rem;
+      z-index: 1000;
     }
-    button:hover {
-      background: #0056b3;
+
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 80px 20px 40px; /* Extra top padding for fixed nav */
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    /* ===== Slideshow ===== */
+    .slideshow-container {
+      position: relative;
+      max-width: 800px;
+      margin: auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .slides {
+      display: none;
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .active-slide {
+      display: block;
+      animation: fade 1.5s;
+    }
+
+    @keyframes fade {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    /* Next & Previous Buttons */
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      user-select: none;
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    /* ===== Responsive Layout ===== */
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .slides {
+        height: 250px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <form id="registrationForm">
-    <h2>Registration Form</h2>
+  <!-- ===== Header ===== -->
+  <header>
+    <h1>My Online Store</h1>
+    <p>Best products, great prices</p>
+  </header>
 
-    <label for="fullname">Full Name:</label>
-    <input type="text" id="fullname" name="fullname" required>
-    <div class="error" id="fullnameError">Full Name is required.</div>
+  <!-- ===== Navigation ===== -->
+  <nav>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#featured">Featured</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <div class="error" id="emailError">Please enter a valid email address.</div>
+  <!-- ===== Main Section ===== -->
+  <section id="featured">
+    <h2>Featured Products</h2>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <div class="error" id="passwordError">
-      Password must be at least 8 characters long and contain a number & special character.
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+      <img src="https://picsum.photos/id/1018/800/400" class="slides active-slide" alt="Product 1">
+      <img src="https://picsum.photos/id/1015/800/400" class="slides" alt="Product 2">
+      <img src="https://picsum.photos/id/1019/800/400" class="slides" alt="Product 3">
+
+      <!-- Navigation buttons -->
+      <span class="prev">&#10094;</span>
+      <span class="next">&#10095;</span>
     </div>
+  </section>
 
-    <label for="phone">Phone Number:</label>
-    <input type="tel" id="phone" name="phone" required pattern="^[0-9]{10}$">
-    <div class="error" id="phoneError">Phone number must be 10 digits.</div>
-
-    <button type="submit">Register</button>
-  </form>
-
-  <div id="success-message">✅ Registration successful!</div>
+  <!-- ===== Footer ===== -->
+  <footer>
+    <p>&copy; 2025 My Online Store. All rights reserved.</p>
+  </footer>
 
   <script>
-    const form = document.getElementById("registrationForm");
-    const fullname = document.getElementById("fullname");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const phone = document.getElementById("phone");
-    const successMessage = document.getElementById("success-message");
+    // ===== Slideshow Logic =====
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slides");
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
 
-    // Validation functions
-    function validateFullName() {
-      if (fullname.value.trim() === "") {
-        setInvalid(fullname, "fullnameError");
-        return false;
-      } else {
-        setValid(fullname, "fullnameError");
-        return true;
-      }
+    function showSlides(n) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove("active-slide");
+        if (i === n) slide.classList.add("active-slide");
+      });
     }
 
-    function validateEmail() {
-      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!regex.test(email.value.trim())) {
-        setInvalid(email, "emailError");
-        return false;
-      } else {
-        setValid(email, "emailError");
-        return true;
-      }
+    function nextSlide() {
+      slideIndex = (slideIndex + 1) % slides.length;
+      showSlides(slideIndex);
     }
 
-    function validatePassword() {
-      const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
-      if (!regex.test(password.value.trim())) {
-        setInvalid(password, "passwordError");
-        return false;
-      } else {
-        setValid(password, "passwordError");
-        return true;
-      }
+    function prevSlide() {
+      slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+      showSlides(slideIndex);
     }
 
-    function validatePhone() {
-      const regex = /^[0-9]{10}$/;
-      if (!regex.test(phone.value.trim())) {
-        setInvalid(phone, "phoneError");
-        return false;
-      } else {
-        setValid(phone, "phoneError");
-        return true;
-      }
-    }
+    // Auto-play every 3s
+    setInterval(nextSlide, 3000);
 
-    // Helper functions
-    function setInvalid(input, errorId) {
-      input.classList.add("invalid");
-      input.classList.remove("valid");
-      document.getElementById(errorId).style.display = "block";
-    }
-
-    function setValid(input, errorId) {
-      input.classList.add("valid");
-      input.classList.remove("invalid");
-      document.getElementById(errorId).style.display = "none";
-    }
-
-    // Event listeners for real-time validation
-    fullname.addEventListener("input", validateFullName);
-    email.addEventListener("input", validateEmail);
-    password.addEventListener("input", validatePassword);
-    phone.addEventListener("input", validatePhone);
-
-    // Form submission
-    form.addEventListener("submit", function(event) {
-      event.preventDefault(); // stop form refresh
-
-      const isFullNameValid = validateFullName();
-      const isEmailValid = validateEmail();
-      const isPasswordValid = validatePassword();
-      const isPhoneValid = validatePhone();
-
-      if (isFullNameValid && isEmailValid && isPasswordValid && isPhoneValid) {
-        successMessage.style.display = "block";
-        form.reset();
-
-        // Reset input styles after submission
-        [fullname, email, password, phone].forEach(input => {
-          input.classList.remove("valid");
-        });
-      } else {
-        successMessage.style.display = "none";
-      }
-    });
+    // Button events
+    nextBtn.addEventListener("click", nextSlide);
+    prevBtn.addEventListener("click", prevSlide);
   </script>
 
 </body>
