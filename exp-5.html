@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Weather App</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 2rem; }
+    .weather-box { background: #fff; padding: 2rem; margin-top: 2rem; border-radius: 8px; max-width: 400px; }
+    .error { color: red; margin-top: 1rem;}
+    label, input, button { font-size: 1.1rem; }
+    input[type="text"] { padding: 0.5rem; margin-right: 10px;}
+    button { padding: 0.5rem 1.5rem; }
+    .loading { color: #888; }
+  </style>
+</head>
+<body>
+  <h2>Weather App</h2>
+  <form id="weatherForm">
+    <label for="cityInput">Enter city:</label>
+    <input type="text" id="cityInput" name="cityInput" required>
+    <button type="submit">Get Weather</button>
+  </form>
+
+  <div id="weatherResult" class="weather-box"></div>
+  <div id="errorMsg" class="error"></div>
+
+  <script>
+    // -- Constants --
+    const API_KEY = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+    const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
+
+    // -- DOM Elements --
+    const weatherForm = document.getElementById('weatherForm');
+    const cityInput = document.getElementById('cityInput');
+    const weatherResult = document.getElementById('weatherResult');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // -- Helper Function to Fetch Weather --
+    async function fetchWeather(city) {
+      errorMsg.textContent = '';
+      weatherResult.innerHTML = '<span class="loading">Loading...</span>';
+
+      try {
+        if (!city || city.trim() === '') throw new Error('Please enter a city name.');
+
+        const url = `${API_URL}?q=${encodeURIComponent(city.trim())}&appid=${API_KEY}&units=metric`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('City not found. Please enter a valid city name.');
+          } else {
+            throw new Error('Failed to fetch weather data.');
+          }
+        }
+
+        const data = await response.json();
+
+        // -- Display weather info --
+        weatherResult.innerHTML = `
+          <h3>Weather in ${data.name}, ${data.sys.country}</h3>
+          <p><strong>Temperature:</strong> ${data.main.temp} &deg;C</p>
+          <p><strong>Condition:</strong> ${data.weather.description}</p>
+        `;
+
+        // -- Save to localStorage --
+        localStorage.setItem('lastCity', data.name);
+      } catch (err) {
+        weatherResult.innerHTML = '';
+        errorMsg.textContent = err.message;
+      }
+    }
+
+    // -- Form Submission Handler --
+    weatherForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const city = cityInput.value;
+      fetchWeather(city);
+    });
+
+    // -- On Page Load: Fetch for Last Searched City (if available) --
+    window.addEventListener('DOMContentLoaded', () => {
+      const lastCity = localStorage.getItem('lastCity');
+      if (lastCity) {
+        cityInput.value = lastCity;
+        fetchWeather(lastCity);
+      }
+    });
+  </script>
+</body>
+</html>
